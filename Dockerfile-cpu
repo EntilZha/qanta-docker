@@ -1,0 +1,4 @@
+FROM qanta
+
+RUN pip install tensorflow
+RUN pip install keras

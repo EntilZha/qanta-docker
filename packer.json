@@ -1,0 +1,102 @@
+{
+  "builders": [
+    {
+      "type": "docker",
+      "image": "ubuntu:17.10",
+      "commit": true
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["mkdir -p /home/ubuntu/"]
+    },
+    {
+      "type": "file",
+      "source": "requirements.txt",
+      "destination": "/home/ubuntu/requirements.txt"
+    },
+    {
+      "type": "file",
+      "source": "conf/aws-qb-env.sh",
+      "destination": "/home/ubuntu/aws-qb-env.sh"
+    },
+    {
+      "type": "file",
+      "source": "conf/limits.conf",
+      "destination": "/home/ubuntu/limits.conf"
+    },
+    {
+      "type": "file",
+      "source": "conf/client.cfg",
+      "destination": "/home/ubuntu/client.cfg"
+    },
+    {
+      "type": "file",
+      "source": "conf/environment",
+      "destination": "/home/ubuntu/environment"
+    },
+    {
+      "type": "file",
+      "source": "conf/spark-defaults.conf",
+      "destination": "/home/ubuntu/spark-defaults.conf"
+    },
+    {
+      "type": "shell",
+      "inline": [
+      "apt update",
+        "apt upgrade -y",
+        "apt install -y build-essential cmake python-software-properties",
+        "apt install -y git wget vim tmux unzip",
+        "apt install -y libboost-program-options-dev libboost-python-dev libtool libboost-all-dev",
+        "apt install -y liblzma-dev libpq-dev liblz4-tool zlib1g-dev",
+        "apt install -y default-jre default-jdk",
+        "apt install -y texlive-latex-base texlive-latex-extra texlive-fonts-extra texlive-fonts-recommended pdftk poppler-utils",
+        "cat /home/ubuntu/environment >> /etc/environment"
+      ]
+    },
+    {
+      "type": "shell",
+      "script": "bin/install-python.sh"
+    },
+    {
+      "type": "shell",
+      "script": "bin/install-spark.sh"
+    },
+    {
+      "type": "shell",
+      "script": "bin/install-vw.sh"
+    },
+    {
+      "type": "shell",
+      "script": "bin/install-dl-libs.sh"
+    },
+    {
+      "type": "shell",
+      "script": "bin/install-pandoc.sh"
+    },
+    {
+      "type": "shell",
+      "script": "bin/install-elasticsearch.sh"
+    },
+    {
+      "type": "shell",
+      "script": "bin/install-utilities.sh"
+    },
+    {
+      "type": "shell",
+      "script": "bin/configure.sh"
+    },
+    {
+      "type": "file",
+      "source": "conf/aws-config",
+      "destination": "/home/ubuntu/.aws/config"
+    },
+    {
+      "type": "file",
+      "source": "conf/tmux.conf",
+      "destination": "/home/ubuntu/.tmux.conf"
+    }
+  ]
+}
